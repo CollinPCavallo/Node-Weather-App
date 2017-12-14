@@ -1,6 +1,10 @@
-const request = require('request');
+// requires the "Yargs" npm package
 const yargs = require('yargs');
 
+"requires the geocode file to allow us to call the geocodeAddress function"
+const geocode = require('./geocode/geocode.js')
+
+// sets up user input using yargs, adding the -a flag for the address the user would like to search
 const argv = yargs
     .options({
         a: {
@@ -14,19 +18,12 @@ const argv = yargs
     .alias('help', 'h')
     .argv;
 
-
-    var encodedURL = encodeURIComponent(argv.a)
-request({
-    url: `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedURL}`,
-    json: true
-}, (error, response, body) => {
-    if (error) {
-        console.log('Unable to connect to Google Servers.');
-    } else if (body.status === 'ZERO_RESULTS'){
-        console.log('Unable to find entered address');
-    }else if(body.status === 'OK') {
-    console.log(`Address: ${body.results[0].formatted_address}`);
-    console.log(`Latitude: ${body.results[0].geometry.location.lat}`);
-    console.log(`Longitude: ${body.results[0].geometry.location.lng}`);
-}
+//call the geocodeAddress function from within geocode.js, after the results from the function come back, we check if there is an error message,
+//if so we console log the message, if not then we console.log the returning object.
+geocode.geocodeAddress(argv.a, (errorMessage, results) => {
+    if (errorMessage) {
+        console.log(errorMessage);
+    } else {
+        console.log(JSON.stringify(results, undefined, 2))
+    }
 })
