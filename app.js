@@ -36,5 +36,3 @@ geocode.geocodeAddress(argv.a, (errorMessage, results) => {
 
     }
 })
-
-

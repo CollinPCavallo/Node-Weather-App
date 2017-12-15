@@ -14,10 +14,10 @@ var geocodeAddress = (address, callback) => {
         //if an error is received we inform the user that the application could not connect to the google servers.
         if (error) {
             callback('Unable to connect to Google Servers.');
-        // if no results come back from the results of the json object, we inform the user that no results were found.
+            // if no results come back from the results of the json object, we inform the user that no results were found.
         } else if (body.status === 'ZERO_RESULTS') {
             callback('Unable to find entered address')
-        //if no errors occurred, we then place the results we want inside a object to be returned.
+            //if no errors occurred, we then place the results we want inside a object to be returned.
         } else if (body.status === 'OK') {
             callback(undefined, {
                 address: body.results[0].formatted_address,
